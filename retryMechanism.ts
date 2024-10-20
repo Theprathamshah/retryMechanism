@@ -231,11 +231,11 @@ export const applyRetryMechanism = (
         const timeDiffFromFirstReq = currentTimeStamp - firstRequestedTime;
         const desiredNexRetry = prefixSumOfTimeSeries.at(retryCount - 1);
 
-
+        const desiredJitterDelay = addJitter(desiredNexRetry,retryCount);
 
         /** It will cover up the delayed response or timeouts as well in retry config */
         const adjustedDelay =
-          desiredNexRetry - timeDiffFromFirstReq > 0
+        desiredJitterDelay - timeDiffFromFirstReq > 0
             ? desiredNexRetry - timeDiffFromFirstReq
             : 0;
         console.log(`First Requested Time is ${firstRequestedTime}`)
